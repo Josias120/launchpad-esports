@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LaunchPad Esports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --neon: #00f5d4;
+    --fire: #ff4d00;
+    --gold: #ffd600;
+    --bg: #080a0f;
+    --bg2: #0d1117;
+    --surface: #111827;
+    --border: rgba(0,245,212,0.15);
+    --text: #e2e8f0;
+    --muted: #64748b;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* SCANLINE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.08) 3px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 3rem;
+    background: rgba(8,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    color: var(--neon);
+    text-shadow: 0 0 20px var(--neon);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--fire); }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav ul li a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s, text-shadow 0.2s;
+  }
+
+  nav ul li a:hover {
+    color: var(--neon);
+    text-shadow: 0 0 10px var(--neon);
+  }
+
+  .nav-cta {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.5rem 1.2rem;
+    background: transparent;
+    border: 1px solid var(--neon);
+    color: var(--neon);
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+  }
+
+  .nav-cta:hover {
+    background: var(--neon);
+    color: var(--bg);
+    box-shadow: 0 0 30px var(--neon);
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,245,212,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%,-50%) scale(1); opacity: 0.8; }
+    50% { transform: translate(-50%,-50%) scale(1.15); opacity: 1; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    padding: 2rem;
+    animation: fadeUp 1s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--neon);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: block;
+    animation: fadeUp 1s 0.1s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 12vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: 4px;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 1s 0.2s ease both;
+  }
+
+  .hero h1 .accent { color: var(--neon); text-shadow: 0 0 40px var(--neon); }
+  .hero h1 .fire { color: var(--fire); text-shadow: 0 0 40px var(--fire); }
+
+  .hero p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--muted);
+    max-width: 550px;
+    margin: 0 auto 2.5rem;
+    letter-spacing: 1px;
+    animation: fadeUp 1s 0.3s ease both;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    animation: fadeUp 1s 0.4s ease both;
+  }
+
+  .btn-primary {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 1rem 2.5rem;
+    background: var(--neon);
+    color: var(--bg);
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    text-decoration: none;
+    transition: box-shadow 0.2s, transform 0.2s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 40px var(--neon);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 1rem 2.5rem;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .btn-outline:hover { border-color: var(--neon); color: var(--neon); }
+
+  /* ── COUNTDOWN ── */
+  #countdown {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem;
+    text-align: center;
+  }
+
+  .countdown-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--neon);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .countdown-grid {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cd-unit {
+    text-align: center;
+  }
+
+  .cd-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: var(--neon);
+    text-shadow: 0 0 20px var(--neon);
+    line-height: 1;
+    display: block;
+  }
+
+  .cd-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  .cd-sep {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--fire);
+    align-self: flex-start;
+    padding-top: 0.2rem;
+  }
+
+  /* ── SECTION SHARED ── */
+  section { padding: 6rem 2rem; }
+
+  .section-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    color: var(--neon);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    letter-spacing: 3px;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    max-width: 500px;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* ── NEWS ── */
+  #news { background: var(--bg); }
+
+  .news-header { margin-bottom: 3rem; }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .news-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: pointer;
+  }
+
+  .news-card:hover {
+    border-color: var(--neon);
+    transform: translateY(-4px);
+  }
+
+  .news-card-img {
+    height: 160px;
+    background: linear-gradient(135deg, #0d1117 0%, #1a2744 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 4px;
+    color: var(--neon);
+    opacity: 0.6;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .news-card-img::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, transparent 40%, rgba(0,245,212,0.05) 100%);
+  }
+
+  .news-card-body { padding: 1.5rem; }
+
+  .news-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--fire);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .news-card-body h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .news-card-body p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── TEAM ── */
+  #team { background: var(--bg2); }
+
+  .team-header { margin-bottom: 3rem; }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .player-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .player-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--neon);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+
+  .player-card:hover::before { transform: scaleX(1); }
+
+  .player-card:hover {
+    border-color: rgba(0,245,212,0.4);
+    box-shadow: 0 0 30px rgba(0,245,212,0.1);
+  }
+
+  .player-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a2744, #0d1117);
+    border: 2px solid var(--border);
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--neon);
+    transition: border-color 0.3s;
+  }
+
+  .player-card:hover .player-avatar { border-color: var(--neon); }
+
+  .player-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    color: var(--fire);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .player-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.3rem;
+  }
+
+  .player-role {
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* ── SCHEDULE ── */
+  #schedule { background: var(--bg); }
+
+  .schedule-header { margin-bottom: 3rem; }
+
+  .match-list { display: flex; flex-direction: column; gap: 1rem; }
+
+  .match-row {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    transition: border-color 0.3s;
+  }
+
+  .match-row:hover { border-color: var(--neon); }
+
+  .match-date {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    color: var(--neon);
+    min-width: 100px;
+  }
+
+  .match-teams {
+    flex: 1;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+  }
+
+  .match-teams span { color: var(--fire); margin: 0 0.5rem; }
+
+  .match-game {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .match-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+
+  .badge-live { color: var(--fire); border-color: var(--fire); animation: blink 1s step-end infinite; }
+  .badge-upcoming { color: var(--neon); border-color: var(--neon); }
+  .badge-done { color: var(--muted); border-color: var(--muted); }
+
+  @keyframes blink { 50% { opacity: 0.3; } }
+
+  /* ── SPONSORS ── */
+  #sponsors {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sponsors-header { text-align: center; margin-bottom: 3rem; }
+
+  .sponsor-grid {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sponsor-slot {
+    width: 180px; height: 80px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    color: var(--muted);
+    transition: border-color 0.3s, color 0.3s;
+    cursor: default;
+  }
+
+  .sponsor-slot:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--bg); }
+
+  .contact-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .contact-info h2 { margin-bottom: 1rem; }
+
+  .contact-info p {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .contact-detail {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    color: var(--muted);
+  }
+
+  .contact-detail .icon {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--neon);
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .form-group label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    color: var(--neon);
+    text-transform: uppercase;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.85rem 1rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--neon);
+    box-shadow: 0 0 15px rgba(0,245,212,0.1);
+  }
+
+  .form-group textarea { resize: vertical; min-height: 120px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .submit-btn {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    background: var(--neon);
+    color: var(--bg);
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    transition: box-shadow 0.2s, transform 0.2s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    margin-top: 0.5rem;
+  }
+
+  .submit-btn:hover {
+    box-shadow: 0 0 30px var(--neon);
+    transform: translateY(-2px);
+  }
+
+  /* ── NEWSLETTER ── */
+  #newsletter {
+    background: linear-gradient(135deg, #0d1117 0%, #0a1628 100%);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 5rem 2rem;
+  }
+
+  #newsletter h2 { margin-bottom: 1rem; }
+
+  #newsletter p {
+    color: var(--muted);
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
+
+  .newsletter-form {
+    display: flex;
+    gap: 0;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .newsletter-form input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-right: none;
+    color: var(--text);
+    padding: 0.9rem 1.2rem;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .newsletter-form input:focus { border-color: var(--neon); }
+
+  .newsletter-form button {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.9rem 1.5rem;
+    background: var(--neon);
+    color: var(--bg);
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    transition: box-shadow 0.2s;
+    white-space: nowrap;
+  }
+
+  .newsletter-form button:hover { box-shadow: 0 0 20px var(--neon); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #050709;
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    color: var(--neon);
+    text-shadow: 0 0 15px var(--neon);
+  }
+
+  .footer-logo span { color: var(--fire); }
+
+  footer p {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+  }
+
+  .footer-links { display: flex; gap: 1.5rem; }
+
+  .footer-links a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--neon); }
+
+  /* ── DIVIDER ── */
+  .neon-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--neon), transparent);
+    margin: 0;
+    opacity: 0.4;
+  }
+
+  /* ── MOBILE NAV ── */
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--text); transition: 0.3s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+
+    nav ul { display: none; }
+
+    .nav-cta { display: none; }
+
+    .hamburger { display: flex; }
+
+    .contact-wrap { grid-template-columns: 1fr; gap: 2.5rem; }
+
+    .form-row { grid-template-columns: 1fr; }
+
+    footer { flex-direction: column; text-align: center; }
+
+    .countdown-grid { gap: 1rem; }
+
+    .cd-num { font-size: 2.8rem; }
+
+    .match-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+
+    section { padding: 4rem 1.5rem; }
+  }
+
+  /* ── SCROLL ANIMATION ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* success toast */
+  .toast {
+    position: fixed;
+    bottom: 2rem; right: 2rem;
+    background: var(--neon);
+    color: var(--bg);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    padding: 1rem 1.5rem;
+    z-index: 9998;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: transform 0.4s, opacity 0.4s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="logo">Launch<span>PAD</span></a>
+  <ul>
+    <li><a href="#news">News</a></li>
+    <li><a href="#team">Roster</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#sponsors">Sponsors</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Join Us</a>
+  <div class="hamburger" onclick="toggleNav(this)">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <span class="hero-tag">// EST. 2025 &nbsp;&bull;&nbsp; COMPETE. DOMINATE. EVOLVE.</span>
+    <h1 class="hero">
+      <span class="accent">LAUNCH</span><br>
+      <span class="fire">PAD</span><br>
+      ESPORTS
+    </h1>
+    <p>Your digital home for competitive gaming. Built by students, powered by passion.</p>
+    <div class="hero-btns">
+      <a href="#team" class="btn-primary">View Roster</a>
+      <a href="#schedule" class="btn-outline">Match Schedule</a>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN -->
+<div id="countdown">
+  <p class="countdown-label">// Next Major Tournament</p>
+  <div class="countdown-grid">
+    <div class="cd-unit"><span class="cd-num" id="cd-days">00</span><span class="cd-label">Days</span></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><span class="cd-num" id="cd-hours">00</span><span class="cd-label">Hours</span></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><span class="cd-num" id="cd-mins">00</span><span class="cd-label">Minutes</span></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><span class="cd-num" id="cd-secs">00</span><span class="cd-label">Seconds</span></div>
+  </div>
+</div>
+
+<div class="neon-divider"></div>
+
+<!-- NEWS -->
+<section id="news">
+  <div class="container">
+    <div class="news-header reveal">
+      <span class="section-tag">// Latest Updates</span>
+      <h2 class="section-title">NEWS & UPDATES</h2>
+      <p class="section-sub">Stay up to date with everything happening at LaunchPad Esports.</p>
+    </div>
+    <div class="news-grid">
+      <div class="news-card reveal">
+        <div class="news-card-img">VALORANT</div>
+        <div class="news-card-body">
+          <p class="news-tag">// Tournament</p>
+          <h3>Regional Qualifier — Week 3 Results</h3>
+          <p>LaunchPad Valorant squad advances to the semi-finals after a dominant 13-7 victory on Ascent.</p>
+        </div>
+      </div>
+      <div class="news-card reveal">
+        <div class="news-card-img" style="background:linear-gradient(135deg,#0d1117,#1a0d2b)">LEAGUE</div>
+        <div class="news-card-body">
+          <p class="news-tag">// Roster</p>
+          <h3>New Mid-Laner Joins the Squad</h3>
+          <p>We're thrilled to announce the signing of our new carry player ahead of the spring split.</p>
+        </div>
+      </div>
+      <div class="news-card reveal">
+        <div class="news-card-img" style="background:linear-gradient(135deg,#0d1117,#0d2b1a)">FORTNITE</div>
+        <div class="news-card-body">
+          <p class="news-tag">// Event</p>
+          <h3>LaunchPad Open — Sign-Ups Now Live</h3>
+          <p>Our first community tournament is open for registration. Cash prizes and merch up for grabs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="container">
+    <div class="team-header reveal">
+      <span class="section-tag">// The Players</span>
+      <h2 class="section-title">MEET THE ROSTER</h2>
+      <p class="section-sub">Our competitive team — each player handpicked for skill, dedication, and game IQ.</p>
+    </div>
+    <div class="team-grid">
+      <div class="player-card reveal">
+        <div class="player-avatar">ZX</div>
+        <p class="player-tag">// IGL</p>
+        <p class="player-name">ZERO_X</p>
+        <p class="player-role">In-Game Leader · Valorant</p>
+      </div>
+      <div class="player-card reveal">
+        <div class="player-avatar">PH</div>
+        <p class="player-tag">// Entry</p>
+        <p class="player-name">PHANTOM</p>
+        <p class="player-role">Entry Fragger · Valorant</p>
+      </div>
+      <div class="player-card reveal">
+        <div class="player-avatar">NV</div>
+        <p class="player-tag">// Support</p>
+        <p class="player-name">NOVA</p>
+        <p class="player-role">Support · League of Legends</p>
+      </div>
+      <div class="player-card reveal">
+        <div class="player-avatar">GX</div>
+        <p class="player-tag">// Carry</p>
+        <p class="player-name">GLITCH</p>
+        <p class="player-role">Mid Carry · League of Legends</p>
+      </div>
+      <div class="player-card reveal">
+        <div class="player-avatar">SH</div>
+        <p class="player-tag">// Builder</p>
+        <p class="player-name">SHADE</p>
+        <p class="player-role">Slayer · Fortnite</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- SCHEDULE -->
+<section id="schedule">
+  <div class="container">
+    <div class="schedule-header reveal">
+      <span class="section-tag">// Upcoming Matches</span>
+      <h2 class="section-title">MATCH SCHEDULE</h2>
+      <p class="section-sub">Follow our competitive calendar and catch us live.</p>
+    </div>
+    <div class="match-list">
+      <div class="match-row reveal">
+        <span class="match-date">01 JUN 2025</span>
+        <span class="match-teams">LAUNCHPAD <span>VS</span> NOVA SQUAD</span>
+        <span class="match-game">VALORANT</span>
+        <span class="match-badge badge-live">● LIVE</span>
+      </div>
+      <div class="match-row reveal">
+        <span class="match-date">08 JUN 2025</span>
+        <span class="match-teams">LAUNCHPAD <span>VS</span> STEEL WOLVES</span>
+        <span class="match-game">LEAGUE OF LEGENDS</span>
+        <span class="match-badge badge-upcoming">UPCOMING</span>
+      </div>
+      <div class="match-row reveal">
+        <span class="match-date">15 JUN 2025</span>
+        <span class="match-teams">LAUNCHPAD <span>VS</span> CRIMSON FC</span>
+        <span class="match-game">FORTNITE</span>
+        <span class="match-badge badge-upcoming">UPCOMING</span>
+      </div>
+      <div class="match-row reveal">
+        <span class="match-date">22 MAY 2025</span>
+        <span class="match-teams">LAUNCHPAD <span>VS</span> PHANTOM 9</span>
+        <span class="match-game">VALORANT</span>
+        <span class="match-badge badge-done">COMPLETED</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- SPONSORS -->
+<section id="sponsors">
+  <div class="container">
+    <div class="sponsors-header reveal">
+      <span class="section-tag">// Backed By</span>
+      <h2 class="section-title">OUR SPONSORS</h2>
+      <p class="section-sub" style="margin:0 auto">Supporting the next generation of competitive gaming.</p>
+    </div>
+    <div class="sponsor-grid reveal">
+      <div class="sponsor-slot">NEXUS GG</div>
+      <div class="sponsor-slot">HYPERFUEL</div>
+      <div class="sponsor-slot">ARCTECH</div>
+      <div class="sponsor-slot">GRIDLOCK</div>
+      <div class="sponsor-slot">BECOME A SPONSOR →</div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-wrap">
+      <div class="contact-info reveal">
+        <span class="section-tag">// Get In Touch</span>
+        <h2 class="section-title">CONTACT US</h2>
+        <p>Want to join the team, partner with us, or just say hello? Drop us a message and we'll get back to you.</p>
+        <div class="contact-detail">
+          <div class="icon">📧</div>
+          <span>hello@launchpadesports.gg</span>
+        </div>
+        <div class="contact-detail">
+          <div class="icon">💬</div>
+          <span>discord.gg/launchpad</span>
+        </div>
+        <div class="contact-detail">
+          <div class="icon">🐦</div>
+          <span>@LaunchPadEsports</span>
+        </div>
+      </div>
+      <div class="contact-form reveal">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" placeholder="Your name" id="f-name">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="your@email.com" id="f-email">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <select id="f-subject">
+            <option value="">Select a topic...</option>
+            <option>Join the Team</option>
+            <option>Sponsorship Enquiry</option>
+            <option>Media / Press</option>
+            <option>General Enquiry</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Tell us more..." id="f-message"></textarea>
+        </div>
+        <button class="submit-btn" onclick="submitForm()">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="newsletter">
+  <div class="container">
+    <span class="section-tag" style="display:block;text-align:center;margin-bottom:0.5rem">// Stay Connected</span>
+    <h2 class="section-title reveal" style="text-align:center">JOIN THE NEWSLETTER</h2>
+    <p class="reveal">Get match alerts, team news, and tournament info straight to your inbox.</p>
+    <div class="newsletter-form reveal">
+      <input type="email" id="nl-email" placeholder="Enter your email address...">
+      <button onclick="subscribeNewsletter()">Subscribe</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Launch<span>PAD</span></div>
+  <p>© 2025 LaunchPad Esports. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="#news">News</a>
+    <a href="#team">Team</a>
+    <a href="#schedule">Schedule</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── COUNTDOWN ──
+  const target = new Date('2025-06-21T18:00:00');
+  function updateCountdown() {
+    const now = new Date();
+    const diff = target - now;
+    if (diff <= 0) {
+      document.getElementById('cd-days').textContent = '00';
+      document.getElementById('cd-hours').textContent = '00';
+      document.getElementById('cd-mins').textContent = '00';
+      document.getElementById('cd-secs').textContent = '00';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-days').textContent  = String(d).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-mins').textContent  = String(m).padStart(2,'0');
+    document.getElementById('cd-secs').textContent  = String(s).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ── SCROLL REVEAL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // ── TOAST ──
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  // ── FORM ──
+  function submitForm() {
+    const name = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const msg = document.getElementById('f-message').value.trim();
+    if (!name || !email || !msg) { showToast('⚠ Please fill in all fields.'); return; }
+    showToast('✓ Message sent! We\'ll be in touch.');
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-email').value = '';
+    document.getElementById('f-subject').value = '';
+    document.getElementById('f-message').value = '';
+  }
+
+  // ── NEWSLETTER ──
+  function subscribeNewsletter() {
+    const email = document.getElementById('nl-email').value.trim();
+    if (!email || !email.includes('@')) { showToast('⚠ Enter a valid email address.'); return; }
+    showToast('✓ You\'re subscribed! Welcome to the squad.');
+    document.getElementById('nl-email').value = '';
+  }
+
+  // ── HAMBURGER (mobile) ──
+  function toggleNav(btn) {
+    const ul = document.querySelector('nav ul');
+    ul.style.display = ul.style.display === 'flex' ? 'none' : 'flex';
+    ul.style.flexDirection = 'column';
+    ul.style.position = 'absolute';
+    ul.style.top = '70px';
+    ul.style.left = '0'; ul.style.right = '0';
+    ul.style.background = 'rgba(8,10,15,0.97)';
+    ul.style.padding = '2rem';
+    ul.style.gap = '1.5rem';
+    ul.style.borderBottom = '1px solid rgba(0,245,212,0.15)';
+  }
+</script>
+</body>
+</html>
